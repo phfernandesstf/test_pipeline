@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Exemplo de Echo') {
+        stage('Exemplo de ls') {
             steps {
-                echo 'Olá, este é um teste simples no Jenkins!'
+                ls
             }
         }
     }
