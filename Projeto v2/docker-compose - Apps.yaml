@@ -1,0 +1,71 @@
+services:
+
+#GERENCIAMENTO BANCO DE DADOS
+
+  zabbix-adminer:
+    container_name: adminer-manager
+    image: adminer:standalone
+    restart: unless-stopped
+    networks:
+      - zabbix_network
+    ports:
+      - '8880:8080'
+
+#GERENCIDOR DE URL
+
+  nginx-proxy-manager:
+    image: 'docker.io/jc21/nginx-proxy-manager:latest'
+    container_name: nginx-manager
+    restart: unless-stopped
+    ports:
+      #- '80:80'
+      - '8881:81'
+      #- '443:3000'
+    volumes:
+      - ./data/nginx:/data
+      - ./data/nginx/letsencrypt:/etc/letsencrypt
+    networks:
+      - zabbix_network
+
+#GERENCIADOR DE CONTAINERS
+
+  portainer:
+    image: portainer/portainer:alpine
+    container_name: portainer-manager
+    ports:
+      - "8882:9000"
+      #- "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data/portainer/portainer_data:/data/portainer
+    restart: always
+    networks:
+      - zabbix_network
+      
+#DASHBOARD GRAFAN
+  grafana:
+    image: grafana/grafana:11.4.0-ubuntu
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+      #Plugins
+      - GF_INSTALL_PLUGINS=alexanderzobnin-zabbix-app
+      #Database 
+      - GF_DATABASE_TYPE = postgres
+      - GF_DATABASE_HOST = database-postgres
+      - GF_DATABASE_NAME = grafana
+      - GF_DATABASE_USER = postgres
+      - GF_DATABASE_PASSWORD = Stefanini@20
+      
+    volumes:
+      - ./data/grafana/grafana-storage:/var/lib/grafana 
+    networks:
+      - zabbix_network
+    ports:
+      - '3000:3000'
+
+#NETWORK
+
+networks:
+  zabbix_network:
+    driver: bridge

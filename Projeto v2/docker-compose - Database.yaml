@@ -1,0 +1,21 @@
+services:
+
+# DATABASE 
+  zabbix-database-postgres:
+    container_name: database-postgres
+    image: postgres:17-alpine
+    shm_size: 256mb
+    environment:
+      POSTGRES_PASSWORD: Stefanini@20
+      POSTGRES_USER: postgres
+    restart: unless-stopped
+    volumes:
+      - ./postgres/mount:/var/lib/postgresql/data
+    
+    networks:
+    - zabbix_network
+
+#NETWORK
+networks:
+  zabbix_network:
+    driver: bridge
