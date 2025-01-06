@@ -51,11 +51,11 @@ services:
       #Plugins
       - GF_INSTALL_PLUGINS=alexanderzobnin-zabbix-app
       #Database 
-      - GF_DATABASE_TYPE = postgres
-      - GF_DATABASE_HOST = database-postgres
-      - GF_DATABASE_NAME = grafana
-      - GF_DATABASE_USER = postgres
-      - GF_DATABASE_PASSWORD = Stefanini@20
+      - GF_DATABASE_TYPE=postgres
+      - GF_DATABASE_HOST=database-postgres
+      - GF_DATABASE_NAME=grafana
+      - GF_DATABASE_USER=postgres
+      - GF_DATABASE_PASSWORD=Stefanini@20
       
     volumes:
       - ./data/grafana/grafana-storage:/var/lib/grafana 
